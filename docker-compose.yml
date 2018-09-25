@@ -1,0 +1,25 @@
+version: "3"
+services:
+  gluster-client:
+    build: ./glusterfs-client
+    tty: true
+    privileged: true
+    command: sh -c "./mount_gluster.sh && bin/bash"
+    depends_on:
+      - gluster-server
+  gluster-server:
+    build: ./glusterfs-cent6
+    tty: true
+    privileged: true
+    command: sh -c "service glusterd start && ./server_init.sh && /bin/bash"
+    depends_on:
+      - gluster-node1
+      - gluster-node2
+  gluster-node1:
+    build: ./glusterfs-cent6
+    tty: true
+    privileged: true
+  gluster-node2:
+    build: ./glusterfs-cent6
+    tty: true
+    privileged: true
